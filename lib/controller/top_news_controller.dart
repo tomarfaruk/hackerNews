@@ -35,8 +35,9 @@ class TopNewsController extends GetxController {
     }
   }
 
+  //get all story then view all
   Future getAllStory() async {
-    final futureArticals = storyIds.take(30).map((id) => getSingleStory(id));
+    final futureArticals = storyIds.take(25).map((id) => getSingleStory(id));
 
     final articals = Future.wait(futureArticals);
 
@@ -44,6 +45,16 @@ class TopNewsController extends GetxController {
     storys.value = getarticles;
 
     print("end: ${articals}");
+  }
+
+  //get one and add to view
+  Future getStoryOneByOne() async {
+    for (int i = 0; i < 25; i++) {
+      final getStory = await getSingleStory(storyIds[i]);
+      if (storys.length > 1) _loading.value = true;
+      if (getStory != null) storys.add(getStory);
+      print("end: ${storys.length}");
+    }
   }
 
   @override
